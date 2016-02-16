@@ -20,8 +20,24 @@ var facilitiesGeoJSON;
 //Adding facilities data
 
 $.getJSON( "geojson/Facilities.geojson", function( data ) {
-    // ensure jQuery has pulled all data out of the geojson file
-    var pubLibrary = data;
+    var facilities = data; 
+   //Attempting filter by attribute
+   var pubLibrary = [{
+        "type": "Feature",
+        "properties": {
+            "name": "Public Library - Branch",
+            "show_on_map": true
+        },
+        "geometry": {
+        "type": "Point",
+        }
+    }];
+
+L.geoJson(pubLibrary, {
+    filter: function (feature, layer) {
+        return feature.properties.show_on_map;
+    }
+}).addTo(map);
 
     // dots for library sites
     var pubLibraryPointToLayer = function (feature, latlng) {
